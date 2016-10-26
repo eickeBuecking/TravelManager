@@ -1,0 +1,14 @@
+spring:
+  profiles: development
+
+  data:
+    mongodb:
+      database: meineDatenbank
+---
+spring:
+  profiles: test
+
+  data:
+    mongodb:
+      database: testDB
+  
