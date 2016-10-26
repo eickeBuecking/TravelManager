@@ -126,8 +126,6 @@ public class ApplicationTests {
 		Destination destination1 = new Destination("Bremen", new Date());
 		Destination destination2 = new Destination("München", new Date());
 		
-		destinationRepository.save(destination1);
-		destinationRepository.save(destination2);
 		newTravel.addDestination(destination1);
 		newTravel.addDestination(destination2);
 		

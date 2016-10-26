@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -16,7 +15,6 @@ public class Travel {
 	private String name;
 	private String description;
 	
-	@DBRef
 	private List<Destination> destinations;
 	
 	
@@ -75,8 +73,15 @@ public class Travel {
 	public void addDestination(Destination destination) {
 		if (this.destinations == null) {
 			this.destinations = new ArrayList<Destination>();
-		} 
+		}
+		checkDates(destination.getArrival());
 		destinations.add(destination);
+	}
+
+	private void checkDates(Date arrival) {
+		if(this.startDate.after(arrival)) {
+			
+		}
 	}
 	
 }
