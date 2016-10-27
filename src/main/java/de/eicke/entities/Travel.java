@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import de.eicke.exceptions.TravelManagerException;
+
 
 public class Travel {
 	@Id
@@ -70,18 +72,11 @@ public class Travel {
 		this.name = name;
 	}
 
-	public void addDestination(Destination destination) {
+	public void addDestination(Destination destination) throws TravelManagerException {
 		if (this.destinations == null) {
 			this.destinations = new ArrayList<Destination>();
 		}
-		checkDates(destination.getArrival());
 		destinations.add(destination);
 	}
 
-	private void checkDates(Date arrival) {
-		if(this.startDate.after(arrival)) {
-			
-		}
-	}
-	
 }

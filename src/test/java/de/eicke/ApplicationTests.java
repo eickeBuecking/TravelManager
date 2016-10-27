@@ -1,12 +1,8 @@
 package de.eicke;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Matchers.isNotNull;
 
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -22,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import de.eicke.controller.TravelManager;
 import de.eicke.entities.Destination;
 import de.eicke.entities.Travel;
-import de.eicke.repository.DestinationRepository;
+import de.eicke.exceptions.TravelManagerException;
 import de.eicke.repository.TravelRepository;
 
 @RunWith(SpringRunner.class)
@@ -37,9 +33,6 @@ public class ApplicationTests {
 	TravelManager manager;
 	@Autowired
 	TravelRepository repository;
-
-	@Autowired
-	DestinationRepository destinationRepository;
 
 	@Test
 	public void contextLoads() {
@@ -115,7 +108,7 @@ public class ApplicationTests {
 	}
 	
 	@Test
-	public void testToAddDestinationsToTravel() {
+	public void testToAddDestinationsToTravel() throws TravelManagerException {
 		Travel newTravel = new Travel();
 		newTravel.setName("Reise mit Destinations");
 		newTravel.setDescription("Hier werden Destinations getestet.");
