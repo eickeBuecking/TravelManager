@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,6 +19,12 @@ public class Travel {
 	private String name;
 	private String description;
 	
+	@NotNull(message="STARTDATE_MANDATORY")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
+	private Date startDate;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
+	private Date endDate;
+
 	private List<Destination> destinations;
 	
 	
@@ -27,10 +35,6 @@ public class Travel {
 	public void setDestinations(List<Destination> destinations) {
 		this.destinations = destinations;
 	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
-	private Date startDate;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
-	private Date endDate;
 
 	public Travel() {};
 	

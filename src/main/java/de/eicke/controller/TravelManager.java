@@ -2,8 +2,6 @@ package de.eicke.controller;
 
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +15,7 @@ public class TravelManager {
 	TravelRepository repository;
 	
 	public Travel registerTravel(Travel newTravel) {
+		
 		if (newTravel.getName().isEmpty()) {
 			throw new RuntimeException("Field Name is mandatory!");
 		} else {

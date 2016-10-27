@@ -2,12 +2,16 @@ package de.eicke.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.eicke.entities.Travel;
+import de.eicke.entities.TravelValidator;
 import de.eicke.exceptions.ErrorMessage;
 import de.eicke.exceptions.TravelManagerException;
 
@@ -23,11 +28,19 @@ public class TravelController {
 	@Autowired
 	TravelManager manager;
 	
+	@Autowired
+	TravelValidator travelValidator;
+	
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(travelValidator);
+    }
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@RequestMapping(path="/travels/register", method=RequestMethod.POST)
-	public Travel register(@RequestBody Travel travel) {
+	public Travel register(@Valid @RequestBody Travel travel) {
 		logger.info("Travelregistration for Travel {}", travel.getName()); 
 		return manager.registerTravel(travel);
 	}

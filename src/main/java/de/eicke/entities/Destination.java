@@ -15,6 +15,10 @@ public class Destination {
 	
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
 	private Date arrival;
+	
+	public Destination() {
+		super();
+	}
 
 	public Destination(String name, Date arrival) {
 		this.name = name;
