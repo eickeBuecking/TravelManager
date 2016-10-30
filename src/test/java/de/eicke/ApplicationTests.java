@@ -2,16 +2,29 @@ package de.eicke;
 
 import static org.hamcrest.CoreMatchers.is;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.xml.ws.Response;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -26,6 +39,9 @@ import de.eicke.repository.TravelRepository;
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ApplicationTests {
 
+	@LocalServerPort
+    int randomServerPort;
+	
 	@Autowired
 	TestRestTemplate template = new TestRestTemplate();
 
@@ -33,10 +49,6 @@ public class ApplicationTests {
 	TravelManager manager;
 	@Autowired
 	TravelRepository repository;
-
-	@Test
-	public void contextLoads() {
-	}
 
 	@After
 	public void prepareDatabase() {
@@ -114,7 +126,6 @@ public class ApplicationTests {
 		newTravel.setDescription("Hier werden Destinations getestet.");
 		newTravel.setStartDate(new Date());
 		manager.registerTravel(newTravel);
-		long offset = repository.count();
 		
 		Destination destination1 = new Destination("Bremen", new Date());
 		Destination destination2 = new Destination("München", new Date());
@@ -129,5 +140,25 @@ public class ApplicationTests {
 		Assert.assertNotNull(loadedTravel.getDestinations());
 		
 		Assert.assertThat("Anzahl Destinations", loadedTravel.getDestinations().size(), is(2));
+	}
+	
+	@Test
+	public void testDestinationValidation() throws ParseException, TravelManagerException, URISyntaxException {
+		Travel newTravel = new Travel();
+		newTravel.setName("Reise mit Destinations");
+		newTravel.setDescription("Hier werden Destinations getestet.");
+		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
+		newTravel.setStartDate(format.parse("2016/08/15 08:34:00"));
+		Destination destination1 = new Destination("Bremen", format.parse("2016/08/14 08:34:00"));
+		
+		newTravel.addDestination(destination1);
+		
+		RequestEntity<Travel> request = RequestEntity.put(new URI("http://localhost:" + randomServerPort + "/travels")).accept(MediaType.ALL).body(newTravel);
+		
+		ResponseEntity<Void> response = template.exchange(request, Void.class);
+		
+		Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+		
 	}
 }
