@@ -154,7 +154,7 @@ public class ApplicationTests {
 		
 		newTravel.addDestination(destination1);
 		
-		RequestEntity<Travel> request = RequestEntity.put(new URI("http://localhost:" + randomServerPort + "/travels")).accept(MediaType.ALL).body(newTravel);
+		RequestEntity<Travel> request = RequestEntity.post(new URI("http://localhost:" + randomServerPort + "/travels/register")).accept(MediaType.ALL).body(newTravel);
 		
 		ResponseEntity<Void> response = template.exchange(request, Void.class);
 		

@@ -24,7 +24,8 @@ public class TravelManager {
 		}
 	}
 	public Travel updateTravel(Travel update) {
-		if (update.getId().isEmpty()) {
+		
+		if (update.getId()== null || update.getId().isEmpty()) {
 			throw new RuntimeException("ID not set, update not possible!");
 		} else {
 			repository.save(update);
