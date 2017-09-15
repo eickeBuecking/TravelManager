@@ -20,6 +20,6 @@ spring:
 
   data:
     mongodb:
-      uri: ${OPENSHIFT_MONGODB_DB_URL}
+      uri: ${MONGO_URL}
       database: sampledb
   
