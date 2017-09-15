@@ -1,9 +1,11 @@
+
+
 spring:
   profiles: development
 
   data:
     mongodb:
-      database: meineDatenbank
+      datasbase: meineDatenbank
 ---
 spring:
   profiles: test
@@ -11,4 +13,13 @@ spring:
   data:
     mongodb:
       database: testDB
+  
+---
+spring:
+  profiles: openshift
+
+  data:
+    mongodb:
+      uri: ${OPENSHIFT_MONGODB_DB_URL}
+      database: sampledb
   
