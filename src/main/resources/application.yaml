@@ -1,4 +1,4 @@
-server.contextPath: /travelmanager
+server.context-path: /travelmanager 
 
 spring:
   profiles: development
