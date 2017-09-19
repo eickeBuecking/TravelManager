@@ -5,7 +5,7 @@ spring:
 
   data:
     mongodb:
-      datasbase: meineDatenbank
+      database: meineDatenbank
 ---
 spring:
   profiles: test

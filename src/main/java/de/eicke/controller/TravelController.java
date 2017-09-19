@@ -59,6 +59,11 @@ public class TravelController {
 		logger.info("Update for Travel {}", travel.getName()); 
 		return manager.updateTravel(travel);
 	}
+	@RequestMapping(path="/travels/{someId}", method=RequestMethod.DELETE)
+	public void delete(@PathVariable(value="someId") final String id) {
+		logger.info("Deleting travel with id " + id);
+		manager.delete(id);
+	}
 	
 	@ExceptionHandler(TravelManagerException.class)
 	public ResponseEntity<ErrorMessage> exceptionHandler(Exception ex) {

@@ -9,19 +9,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.xml.ws.Response;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +37,13 @@ import de.eicke.repository.TravelRepository;
 @SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ApplicationTests {
 
+	private final org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@LocalServerPort
     int randomServerPort;
+	
+	@Value("${server.context-path}")
+	private String context;
 	
 	@Autowired
 	TestRestTemplate template = new TestRestTemplate();
@@ -154,11 +157,38 @@ public class ApplicationTests {
 		
 		newTravel.addDestination(destination1);
 		
-		RequestEntity<Travel> request = RequestEntity.post(new URI("http://localhost:" + randomServerPort + "/travels/register")).accept(MediaType.ALL).body(newTravel);
+		RequestEntity<Travel> request = RequestEntity.post(new URI("http://localhost:" + randomServerPort + "/"+ context + "/travels/register")).accept(MediaType.ALL).body(newTravel);
 		
 		ResponseEntity<Void> response = template.exchange(request, Void.class);
 		
-		Assert.assertThat(response.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+		Assert.assertThat(response.getStatusCode().is4xxClientError(), is(true));
 		
+	}
+	
+	@Test
+	public void testTravelDeletion() throws ParseException, TravelManagerException, URISyntaxException {
+		Travel newTravel = new Travel();
+		newTravel.setName("Reise mit Destinations");
+		newTravel.setDescription("Hier werden Destinations getestet.");
+		DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
+		newTravel.setStartDate(format.parse("2016/08/15 08:34:00"));
+		Destination destination1 = new Destination("Bremen", format.parse("2016/08/16 08:34:00"));
+		
+		newTravel.addDestination(destination1);
+		
+		Travel storedTravel = manager.registerTravel(newTravel);
+		
+		String request_string = "http://localhost:" + randomServerPort + "/"+ context + "/travels/" + storedTravel.getId();
+		
+		logger.info("Deleting with request: " + request_string);
+		
+		RequestEntity<Void> request = RequestEntity.delete(new URI(request_string)).accept(MediaType.ALL).build();
+		
+		ResponseEntity<Void> response = template.exchange(request, Void.class);
+		
+		Assert.assertThat("Deletion not successfull, returing code " + response.getStatusCode() + "!",  response.getStatusCode().is2xxSuccessful(), is(true));
+		
+		Assert.assertThat("Repository-Size does not match.", repository.count(), is((long) 0));
 	}
 }

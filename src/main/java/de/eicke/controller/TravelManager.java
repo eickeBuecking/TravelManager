@@ -33,7 +33,7 @@ public class TravelManager {
 		}
 	}
 	public Travel getTravelWithID(String id) {
-		if(id.isEmpty()) {
+		if(id == null || id.isEmpty()) {
 			throw new RuntimeException("ID not set, fetching of ressource not possible.");
 		}
 		Travel result = repository.findOne(id);
@@ -44,5 +44,12 @@ public class TravelManager {
 	}
 	public List<Travel> getAllTravels() {
 		return repository.findAll();
+	}
+	public void delete(String id) {
+		if (id == null || id.isEmpty()) {
+			throw new RuntimeException("ID not set, deleting of resource not possible!");
+		}
+		Travel travel = getTravelWithID(id);
+		repository.delete(travel);
 	}
 }
