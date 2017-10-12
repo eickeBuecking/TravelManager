@@ -18,9 +18,9 @@ public class TravelValidator implements Validator{
 		if (travel.getName().isEmpty())
 			errors.rejectValue("name", "NAME_MANDATORY");
 
-		if (travel.getStartDate() == null)
+		if (travel.getStartDate() == null) {
 			errors.rejectValue("startDate", "STARTDATE_MANDATORY");
-		if (travel.getDestinations() != null) {
+		} else if (travel.getDestinations() != null) {
 			int idx = 0;
 			for (Destination destination : travel.getDestinations()) {
 				if(destination.getArrival().before(travel.getStartDate()))
