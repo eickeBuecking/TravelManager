@@ -1,4 +1,9 @@
+security.oauth2.resource.userInfoUri: http://localhost:8081/auth/user
+security.user.password: geheim
+security.user.name: eicke
 server.context-path: /travelmanager 
+logging.level.org.springframework: DEBUG
+server.port: 9080
 ---
 spring:
   profiles: development
