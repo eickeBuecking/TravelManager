@@ -1,6 +1,7 @@
 package de.eicke;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,13 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.eicke.controller.TravelManager;
 import de.eicke.entities.Destination;
@@ -32,26 +41,43 @@ import de.eicke.entities.Travel;
 import de.eicke.exceptions.TravelManagerException;
 import de.eicke.repository.TravelRepository;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@SpringBootTest(classes = Application.class, webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = Application.class)
+@WebAppConfiguration
 public class ApplicationTests {
 
 	private final org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	
-	@LocalServerPort
-    int randomServerPort;
-	
-	@Value("${server.context-path}")
-	private String context;
 	
 	@Autowired
-	TestRestTemplate template = new TestRestTemplate();
+    private WebApplicationContext context;
 
+
+	private MockMvc mockMvc;
+
+    @Before
+    public void setup() {
+    	mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+
+                // ADD THIS!!
+                .apply(springSecurity())
+                .build();
+    }
 	@Autowired
 	TravelManager manager;
 	@Autowired
 	TravelRepository repository;
+	
+	@Autowired
+	ObjectMapper objectMapper;
 
 	@After
 	public void prepareDatabase() {
@@ -66,14 +92,23 @@ public class ApplicationTests {
 	}
 
 	@Test
-	public void createTravelViaService() {
+	public void createTravelViaService() throws JsonProcessingException, Exception {
 		long offset = repository.count();
 		Travel newTravel = new Travel();
 		newTravel.setName("Testreise");
 		newTravel.setDescription("Eine wunderschöne Testreise");
 		newTravel.setStartDate(new Date());
-		template.postForObject("/travels/register", newTravel, Travel.class);
+		// @formatter:off
+		mockMvc
+			.perform(post("/travels/register").with(user("joe"))
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(objectMapper.writeValueAsString(newTravel))).andExpect(status().isOk());
+					
+					
+	    // @formatter:on
 		Assert.assertThat(repository.count(), is(offset + 1));
+		
+		
 	}
 
 	@Test
@@ -99,7 +134,7 @@ public class ApplicationTests {
 	}
 
 	@Test
-	public void testUpdateViaRestService() {
+	public void testUpdateViaRestService() throws JsonProcessingException, Exception {
 		Travel newTravel = new Travel();
 		newTravel.setName("Update-Reise");
 		newTravel.setDescription("Der alte Text");
@@ -111,7 +146,9 @@ public class ApplicationTests {
 		String updateText = "Der neue Text";
 		newTravel.setDescription(updateText);
 
-		template.put("/travels", newTravel);
+		mockMvc.perform(put("/travels").with(user("joe"))
+				.contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(newTravel)))
+				.andExpect(status().isOk());
 		
 		Travel test = repository.findOne(newTravel.getId());
 		Assert.assertNotNull("Couldn't fetch updated object!", test);
@@ -146,7 +183,7 @@ public class ApplicationTests {
 	}
 	
 	@Test
-	public void testDestinationValidation() throws ParseException, TravelManagerException, URISyntaxException {
+	public void testDestinationValidation() throws JsonProcessingException, Exception {
 		Travel newTravel = new Travel();
 		newTravel.setName("Reise mit Destinations");
 		newTravel.setDescription("Hier werden Destinations getestet.");
@@ -157,16 +194,14 @@ public class ApplicationTests {
 		
 		newTravel.addDestination(destination1);
 		
-		RequestEntity<Travel> request = RequestEntity.post(new URI("http://localhost:" + randomServerPort + "/"+ context + "/travels/register")).accept(MediaType.ALL).body(newTravel);
-		
-		ResponseEntity<Void> response = template.exchange(request, Void.class);
-		
-		Assert.assertThat(response.getStatusCode().is4xxClientError(), is(true));
+		mockMvc.perform(post("/travels/register").with(user("joe"))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(newTravel))).andExpect(status().is4xxClientError());
 		
 	}
 	
 	@Test
-	public void testTravelDeletion() throws ParseException, TravelManagerException, URISyntaxException {
+	public void testTravelDeletion() throws Exception {
 		Travel newTravel = new Travel();
 		newTravel.setName("Reise mit Destinations");
 		newTravel.setDescription("Hier werden Destinations getestet.");
@@ -179,16 +214,13 @@ public class ApplicationTests {
 		
 		Travel storedTravel = manager.registerTravel(newTravel);
 		
-		String request_string = "http://localhost:" + randomServerPort + "/"+ context + "/travels/" + storedTravel.getId();
+		mockMvc.perform(delete("/travels/" + storedTravel.getId()).with(user("joe"))).andExpect(status().isOk());
 		
-		logger.info("Deleting with request: " + request_string);
-		
-		RequestEntity<Void> request = RequestEntity.delete(new URI(request_string)).accept(MediaType.ALL).build();
-		
-		ResponseEntity<Void> response = template.exchange(request, Void.class);
-		
-		Assert.assertThat("Deletion not successfull, returing code " + response.getStatusCode() + "!",  response.getStatusCode().is2xxSuccessful(), is(true));
 		
 		Assert.assertThat("Repository-Size does not match.", repository.count(), is((long) 0));
+	}
+	@Test
+	public void givenNoToken_whenGetSecureRequest_thenUnauthorized() throws Exception {
+		mockMvc.perform(get("/travels")).andExpect(status().isUnauthorized());
 	}
 }
