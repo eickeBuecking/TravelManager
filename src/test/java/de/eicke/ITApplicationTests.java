@@ -42,7 +42,7 @@ import de.eicke.repository.TravelRepository;
 @ActiveProfiles("test")
 @SpringBootTest(classes = Application.class)
 @WebAppConfiguration
-public class ApplicationTests {
+public class ITApplicationTests {
 
 	private final org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 

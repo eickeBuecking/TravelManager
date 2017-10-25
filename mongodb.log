@@ -1,0 +1,34 @@
+[mongod output]note: noprealloc may hurt performance in many applications
+[mongod output] Wed Oct 25 17:53:09 [initandlisten] MongoDB starting : pid=57135 port=27017 dbpath=/tmp/mongotest 64-bit host=eicke-virtual-machine
+[mongod output] Wed Oct 25 17:53:09 [initandlisten] db version v2.0.4, pdfile version 4.5
+[mongod output] Wed Oct 25 17:53:09 [initandlisten] git version: 329f3c47fe8136c03392c8f0e548506cb21f8ebf
+[mongod output] Wed Oct 25 17:53:09 [initandlisten] build info: Linux ip-10-110-9-236 2.6.21.7-2.ec2.v1.2.fc8xen #1 SMP Fri Nov 20 17:48:28 EST 2009 x86_64 BOOST_LIB_VERSION=1_41
+[mongod output] Wed Oct 25 17:53:09 [initandlisten] options: { dbpath: "/tmp/mongotest", noauth: true, nohttpinterface: true, nojournal: true, noprealloc: true, port: 27017, smallfiles: true }
+[mongod output] Wed Oct 25 17:53:09 [initandlisten] waiting for connections on port 27017
+[mongod output] Wed Oct 25 17:53:17 [initandlisten] connection accepted from 127.0.0.1:56150 #1
+[mongod output] Wed Oct 25 17:53:18 [initandlisten] connection accepted from 127.0.0.1:56152 #2
+[mongod output] Wed Oct 25 17:53:21 [initandlisten] connection accepted from 127.0.0.1:56154 #3
+[mongod output] Wed Oct 25 17:53:21 [FileAllocator] allocating new datafile /tmp/mongotest/testDB.ns, filling with zeroes...
+[mongod output] Wed Oct 25 17:53:21 [FileAllocator] creating directory /tmp/mongotest/_tmp
+[mongod output] Wed Oct 25 17:53:21 [FileAllocator] done allocating datafile /tmp/mongotest/testDB.ns, size: 16MB,  took 0 secs
+[mongod output] Wed Oct 25 17:53:21 [FileAllocator] allocating new datafile /tmp/mongotest/testDB.0, filling with zeroes...
+[mongod output] Wed Oct 25 17:53:21 [FileAllocator] done allocating datafile /tmp/mongotest/testDB.0, size: 16MB,  took 0 secs
+[mongod output] Wed Oct 25 17:53:21 [conn3] build index testDB.travel { _id: 1 }
+[mongod output] Wed Oct 25 17:53:21 [conn3] build index done 0 records 0 secs
+[mongod output] Wed Oct 25 17:53:21 [conn3] end connection 127.0.0.1:56154
+[mongod output] Wed Oct 25 17:53:21 [conn1] end connection 127.0.0.1:56150
+[mongod output] Wed Oct 25 17:53:21 [initandlisten] connection accepted from 127.0.0.1:49680 #4
+[mongod output] Wed Oct 25 17:53:21 [conn4] terminating, shutdown command received
+[mongod output] Wed Oct 25 17:53:21 dbexit: shutdown called
+[mongod output] Wed Oct 25 17:53:21 [conn4] shutdown: going to close listening sockets...
+[mongod output] Wed Oct 25 17:53:21 [conn4] closing listening socket: 5
+[mongod output] Wed Oct 25 17:53:21 [conn4] closing listening socket: 6
+[mongod output] Wed Oct 25 17:53:21 [conn4] removing socket file: /tmp/mongodb-27017.sock
+[mongod output] Wed Oct 25 17:53:21 [conn4] shutdown: going to flush diaglog...
+[mongod output] Wed Oct 25 17:53:21 [conn4] shutdown: going to close sockets...
+[mongod output] Wed Oct 25 17:53:21 [conn4] shutdown: waiting for fs preallocator...
+[mongod output] Wed Oct 25 17:53:21 [conn4] shutdown: closing all files...
+[mongod output] Wed Oct 25 17:53:21 [conn4] closeAllFiles() finished
+[mongod output] Wed Oct 25 17:53:21 [conn4] shutdown: removing fs lock...
+[mongod output] Wed Oct 25 17:53:21 dbexit: really exiting now
+[mongod output] 
