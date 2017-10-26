@@ -74,7 +74,7 @@ public class Travel {
 		this.name = name;
 	}
 
-	public void addDestination(Destination destination) throws TravelManagerException {
+	public void addDestination(Destination destination) {
 		if (this.destinations == null) {
 			this.destinations = new ArrayList<Destination>();
 		}

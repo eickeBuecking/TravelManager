@@ -25,7 +25,6 @@ public class TravelValidator implements Validator{
 			for (Destination destination : travel.getDestinations()) {
 				if(destination.getArrival().before(travel.getStartDate()))
 					errors.rejectValue("destinations[" + idx + "].arrival", "NOT_BEFORE_TRAVEL_START");
-				
 				if(travel.getEndDate() != null && destination.getArrival().after(travel.getEndDate()))
 					errors.rejectValue("destinations[" + idx + "].arrival", "NOT_AFTER_TRAVEL_END");
 				
