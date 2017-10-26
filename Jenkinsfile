@@ -16,5 +16,10 @@ pipeline {
                 sh 'mvn test'
             }
         }
+        stage('Integration Tests') {
+            steps {
+                sh 'mvn integration-test'
+            }
+        }
     }
 }
