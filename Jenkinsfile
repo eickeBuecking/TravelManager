@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3-alpine'
-            args '-v /eicke/.m2:/root/.m2 -v /tmp/mongotest:/tmp/mongotest -v /tmp/mongoartifact'
+            dockerfile true
+            args '-v /eicke/.m2:/root/.m2
         }
     }
     stages {
