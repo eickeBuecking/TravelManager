@@ -17,6 +17,7 @@ pipeline {
         }
         stage('Integration Tests') {
             steps {
+                sh 'echo whoami'
                 sh 'mvn verify -Dskip.surefire.tests -e'
             }
         }
