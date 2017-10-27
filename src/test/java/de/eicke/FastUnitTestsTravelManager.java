@@ -66,7 +66,7 @@ public class FastUnitTestsTravelManager {
 		newTravel.addDestination(destination1);
 		
 		Travel storedTravel = manager.registerTravel(newTravel); 
-		verify(travelRepository, times(2)).save(newTravel);
+		verify(travelRepository, times(1)).save(newTravel);
 	}
 	
 	@Test
