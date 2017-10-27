@@ -128,8 +128,8 @@
 						<configuration>
 							<version>2.0.4</version>
 
-							<databaseDirectory>/tmp/mongotest</databaseDirectory>
-							<artifactDirectory>/tmp/mongoartifact</artifactDirectory>
+							<databaseDirectory>${user.home}/mongotest</databaseDirectory>
+							<artifactDirectory>${user.home}/mongoartifact</artifactDirectory>
 							<logging>file</logging>
 							<logFileEncoding>utf-8</logFileEncoding>
 
