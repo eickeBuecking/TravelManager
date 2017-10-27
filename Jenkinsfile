@@ -1,10 +1,9 @@
 pipeline {
     agent {
-        docker {
             dockerfile true
             args '-v /eicke/.m2:/root/.m2'
         }
-    }
+    
     stages {
         stage('Build') {
             steps {
