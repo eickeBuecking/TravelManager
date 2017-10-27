@@ -1,6 +1,6 @@
 pipeline {
     agent {
-            dockerfile { args '-v /eicke/.m2:/root/.m2' }
+            dockerfile { args '-v /eicke/.m2:/root/.m2 --user root' }
 
         }
 
