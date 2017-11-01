@@ -2,8 +2,9 @@ security.oauth2.resource.userInfoUri: http://localhost:8081/auth/user
 security.user.password: geheim
 security.user.name: eicke
 server.context-path: /travelmanager 
-logging.level.org.springframework: DEBUG
-server.port: 9080
+logging.level.org.springframework: INFO
+test.value: true
+server.port: 9020
 ---
 spring:
   profiles: development
@@ -27,4 +28,5 @@ spring:
     mongodb:
       uri: ${MONGO_URL}
       database: meineProdDB
+      
   
