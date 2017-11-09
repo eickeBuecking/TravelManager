@@ -7,4 +7,4 @@ RUN chmod 777 /tmp/mongotest
 VOLUME /tmp
 ADD target/TravelService-0.0.1-SNAPSHOT.jar travelmanager.jar
 EXPOSE 9020
-ENTRYPOINT ["java", "-jar", "/travelmanager.jar"]
+ENTRYPOINT ["java", "-jar", "/travelmanager.jar", "--spring.profiles.active=development"]

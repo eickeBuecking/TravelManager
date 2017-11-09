@@ -11,7 +11,7 @@
 	<name>de.eicke.TravelService</name>
 	<description>Storing and Manipulating Travels</description>
 
-	<parent>
+	<parent> 
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.8.RELEASE</version>
