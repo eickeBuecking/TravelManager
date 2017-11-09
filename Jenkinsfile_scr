@@ -27,17 +27,23 @@ node {
     stage('Unit test') {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
-
-        app.inside {
-            sh 'mvn test'
-        }
+         try {
+           app.inside {
+           sh 'mvn test'
+           }
+         } finally {
+          junit 'target/surefire-reports/*.xml'
+         }
     }
     stage('Integration test') {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
-
-        app.inside {
-            sh 'mvn verify -Dskip.surefire.tests -e'
+         try {
+          app.inside {
+              sh 'mvn verify -Dskip.surefire.tests -e'
+          }
+        } finally {
+          junit 'target/failsafe-reports/*.xml'
         }
     }
 
