@@ -1,11 +1,13 @@
 package de.eicke.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import de.eicke.entities.Travel;
+import de.eicke.entities.TravelListItem;
 import de.eicke.repository.TravelRepository;
 
 @Component
@@ -42,8 +44,9 @@ public class TravelManager {
 		}
 		return result;
 	}
-	public List<Travel> getAllTravels() {
-		return repository.findAll();
+	public List<TravelListItem> getAllTravels() {
+		List<Travel> travels = repository.findAll();
+		return travels.stream().map(travel -> new TravelListItem(travel)).collect(Collectors.toList());
 	}
 	public void delete(String id) {
 		if (id == null || id.isEmpty()) {

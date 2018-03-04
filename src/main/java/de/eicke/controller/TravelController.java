@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.eicke.entities.Travel;
+import de.eicke.entities.TravelListItem;
 import de.eicke.entities.TravelValidator;
 import de.eicke.exceptions.ErrorMessage;
 import de.eicke.exceptions.TravelManagerException;
@@ -50,7 +51,7 @@ public class TravelController {
 		return manager.getTravelWithID(id);
 	}
 	@RequestMapping(path="/travels", method=RequestMethod.GET)
-	public List<Travel> fetchAllTravels() {
+	public List<TravelListItem> fetchAllTravels() {
 		logger.info("Fetch all travels."); 
 		return manager.getAllTravels();
 	}

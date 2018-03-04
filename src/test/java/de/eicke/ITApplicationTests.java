@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.eicke.controller.TravelManager;
 import de.eicke.entities.Destination;
 import de.eicke.entities.Travel;
+import de.eicke.entities.TravelListItem;
 import de.eicke.exceptions.TravelManagerException;
 import de.eicke.repository.TravelRepository;
 
@@ -175,6 +176,21 @@ public class ITApplicationTests {
 	}
 	
 	@Test
+	public void testFetchingOfTravelList() {
+		Travel newTravel = new Travel();
+		String name = "Testname";
+		newTravel.setName(name);
+		newTravel.setDescription("Testen der Liste.");
+		newTravel.setStartDate(new Date());
+		newTravel.setStartDate(new Date());
+		newTravel = manager.registerTravel(newTravel);
+		
+		TravelListItem item = manager.getAllTravels().get(0);
+		Assert.assertThat("Ungleicher Name.", item.getName(), is(name));
+		Assert.assertThat("Ungleiche ID", item.getId(), is(newTravel.getId()));
+	}
+	
+	@Test
 	public void testDestinationValidation() throws JsonProcessingException, Exception {
 		Travel newTravel = new Travel();
 		newTravel.setName("Reise mit Destinations");
@@ -215,4 +231,5 @@ public class ITApplicationTests {
 	public void givenNoToken_whenGetSecureRequest_thenUnauthorized() throws Exception {
 		mockMvc.perform(get("/travels")).andExpect(status().isUnauthorized());
 	}
+	
 }
