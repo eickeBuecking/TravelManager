@@ -11,7 +11,7 @@
 	<name>de.eicke.TravelService</name>
 	<description>Storing and Manipulating Travels</description>
 
-	<parent> 
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.8.RELEASE</version>
@@ -63,7 +63,10 @@
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -90,7 +93,7 @@
 					<includes>
 						<include>**/*Fast*</include>
 					</includes>
-					  <skipTests>${skip.surefire.tests}</skipTests>
+					<skipTests>${skip.surefire.tests}</skipTests>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -103,12 +106,12 @@
 						<goals>
 							<goal>integration-test</goal>
 						</goals>
-						
+
 					</execution>
 
 					<execution>
 						<id>verify</id>
-						
+
 						<goals>
 							<goal>verify</goal>
 						</goals>

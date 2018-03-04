@@ -21,7 +21,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
     	http.httpBasic().disable().
-            authorizeRequests()             
+            authorizeRequests().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
+                    "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui.html",
+                    "/swagger-resources/configuration/security").anonymous()            
             	.anyRequest().hasRole("USER");
     }
 }
