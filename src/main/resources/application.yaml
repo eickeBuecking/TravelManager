@@ -1,11 +1,21 @@
 security:
+    user:
+      password: none
     oauth2:
-        resource:
-            jwt:
-                
-                key-uri: "http://localhost:8081/auth/oauth/token_key"
-security.user.password: geheim
-security.user.name: eicke
+      client: 
+        client-id: travelmanager-service
+        client-secret: d9148d1d-45e1-4d86-8103-d54d5ee6068f
+        access-token-uri: http://localhost:8080/auth/realms/Travelmanager/protocol/openid-connect/token
+        user-authorization-uri: http://localhost:8080/auth/realms/Travelmanager/protocol/openid-connect/auth
+      resource:
+        jwt:
+          keyValue: 
+            -----BEGIN PUBLIC KEY-----
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArGOTj35LekNzhzw8XYe2sj1HP6oFLAjYK9EX4y+NBphwK5n0d8PEukhmj5v2Ny6SLK63S0EOmHol8B44BofEIv6e+ljDSqxW82U24jZ32DJ9lzbpAUgP4+wzZF1bkgCCfTKOh7lqYsN9uQ+fPrJJ6Dy395n3Ew+gqLm780T+lJg0r89jPPWf7AqBtYuxsAOO/XGmvJoFLjagqv8NGwqd7cmNX/7BCidDNWai/mQhM83XyGSftXMo77sxOSinROOAkV6/H9i5B82ddVT4GS3xdJhozh0+c9n2vVouV++GG/NPUJjHqMzbRpAfeGtr4wks65v/d5/OeKBM8yLGb2wJ8wIDAQAB
+            -----END PUBLIC KEY-----
+          user-info-uri: http://localhost:8080/auth/realms/Travelmanager/protocol/openid-connect/userinfo
+       
+
 server.context-path: /travelmanager 
 logging.level.org.springframework: INFO
 test.value: true

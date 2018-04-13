@@ -11,11 +11,11 @@ import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHand
 @EnableResourceServer
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
  
-    private static final String RESOURCE_ID = "my_rest_api";
+    private static final String RESOURCE_ID = "travelmanager-service";
      
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) {
-        resources.resourceId(RESOURCE_ID).stateless(false);
+    		resources.resourceId(RESOURCE_ID).stateless(false);
     }
  
     @Override
