@@ -1,3 +1,4 @@
+
 security:
     user:
       password: none
@@ -5,13 +6,13 @@ security:
       client: 
         client-id: travelmanager-service
         client-secret: d9148d1d-45e1-4d86-8103-d54d5ee6068f
-        access-token-uri: http://localhost:8080/auth/realms/Travelmanager/protocol/openid-connect/token
-        user-authorization-uri: http://localhost:8080/auth/realms/Travelmanager/protocol/openid-connect/auth
+        access-token-uri: http://localhost:8280/auth/realms/Travelmanager/protocol/openid-connect/token
+        user-authorization-uri: http://localhost:8280/auth/realms/Travelmanager/protocol/openid-connect/auth
       resource:
         jwt:
           keyValue: 
             -----BEGIN PUBLIC KEY-----
-            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArGOTj35LekNzhzw8XYe2sj1HP6oFLAjYK9EX4y+NBphwK5n0d8PEukhmj5v2Ny6SLK63S0EOmHol8B44BofEIv6e+ljDSqxW82U24jZ32DJ9lzbpAUgP4+wzZF1bkgCCfTKOh7lqYsN9uQ+fPrJJ6Dy395n3Ew+gqLm780T+lJg0r89jPPWf7AqBtYuxsAOO/XGmvJoFLjagqv8NGwqd7cmNX/7BCidDNWai/mQhM83XyGSftXMo77sxOSinROOAkV6/H9i5B82ddVT4GS3xdJhozh0+c9n2vVouV++GG/NPUJjHqMzbRpAfeGtr4wks65v/d5/OeKBM8yLGb2wJ8wIDAQAB
+            MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiN3J5uoDpfuVS9/INFCPGGaX+Gy17fH4p+4DSxxHuoPegDrCadubZRGMau0OaG5Q0rJblrvq0PTR06Ik1QCBaEJSI+/wsiZrGO8U8tmxl/Xtij0+HRXGpotDud23RxaS2MTTH4pX2w/IUaeTVE8v0haVIFpXE9fKbsFPEvTBJbrIvds+bvi7lrdOt0AplsgezFwEgVDiD0FLF86pWPjhJ0ZFd5g3/yyx3tUCkKUeMBd4/lb2fr1MJ+0edI4kUd3l/LMueliY++ahlFJ+/la1rtyuIDtlYHayNrCu81xQyYFdDFZy+u5jzSEeydKMRQQL0RISXQhC6MiRRsgZvr47DwIDAQAB
             -----END PUBLIC KEY-----
           user-info-uri: http://localhost:8080/auth/realms/Travelmanager/protocol/openid-connect/userinfo
        
