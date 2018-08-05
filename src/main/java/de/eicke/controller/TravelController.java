@@ -1,6 +1,7 @@
 package de.eicke.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.eicke.entities.Travel;
@@ -50,10 +52,16 @@ public class TravelController {
 		logger.info("Request received for Travel {}.", id);
 		return manager.getTravelWithID(id);
 	}
+
 	@RequestMapping(path="/travels", method=RequestMethod.GET)
-	public List<TravelListItem> fetchAllTravels() {
-		logger.info("Fetch all travels."); 
-		return manager.getAllTravels();
+	public List<TravelListItem> filterTravels(@RequestParam("search") Optional<String> searchTerm) {
+		if(searchTerm.isPresent()) {
+			logger.info("Fetch travels with filter: {}", searchTerm.get());
+			return manager.filterTravels(searchTerm.get());
+		} else {
+			logger.info("No searchterm applied, fetching all.");
+			return manager.getAllTravels();
+		}
 	}
 	@RequestMapping(path="/travels", method=RequestMethod.PUT)
 	public Travel update(@RequestBody Travel travel) {

@@ -1,6 +1,7 @@
 package de.eicke.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,13 @@ public class TravelManager {
 		}
 		Travel travel = getTravelWithID(id);
 		repository.delete(travel);
+	}
+	public List<TravelListItem> filterTravels(String search) {
+		Optional<String> string = Optional.of(search);
+		if(!string.isPresent()) {
+			throw new RuntimeException("No searchterm applied!");
+		}
+		List<Travel> travels = repository.findByNameStartingWith(string.get());
+		return travels.stream().map(travel -> new TravelListItem(travel)).collect(Collectors.toList());
 	}
 }

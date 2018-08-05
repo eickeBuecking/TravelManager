@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.awt.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -186,6 +187,30 @@ public class ITApplicationTests {
 		newTravel = manager.registerTravel(newTravel);
 		
 		TravelListItem item = manager.getAllTravels().get(0);
+		Assert.assertThat("Ungleicher Name.", item.getName(), is(name));
+		Assert.assertThat("Ungleiche ID", item.getId(), is(newTravel.getId()));
+	}
+	
+	@Test
+	public void testFilteringOfTravelList() {
+		Travel newTravel = new Travel();
+		String name = "Testname";
+		newTravel.setName(name);
+		newTravel.setDescription("Testen der Liste.");
+		newTravel.setStartDate(new Date());
+		newTravel.setStartDate(new Date());
+		newTravel = manager.registerTravel(newTravel);
+		
+		newTravel = new Travel();
+		name = "Pestname";
+		newTravel.setName(name);
+		newTravel.setDescription("Testen der Liste.");
+		newTravel.setStartDate(new Date());
+		newTravel.setStartDate(new Date());
+		newTravel = manager.registerTravel(newTravel);
+		java.util.List<TravelListItem> results = manager.filterTravels("Pest");
+		Assert.assertThat("Anzahl Ergebnisse stimmt nicht.", results.size(), is((int) 1));
+		TravelListItem item = results.get(0);
 		Assert.assertThat("Ungleicher Name.", item.getName(), is(name));
 		Assert.assertThat("Ungleiche ID", item.getId(), is(newTravel.getId()));
 	}
