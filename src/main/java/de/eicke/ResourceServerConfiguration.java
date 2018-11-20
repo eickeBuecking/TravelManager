@@ -23,7 +23,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     	http.httpBasic().disable().
             authorizeRequests().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security",
                     "/swagger-ui.html", "/webjars/**", "/swagger-resources/configuration/ui", "/swagger-ui.html",
-                    "/swagger-resources/configuration/security").anonymous()            
+                    "/swagger-resources/configuration/security","/healthy").anonymous()            
             	.anyRequest().hasRole("USER");
     }
 }

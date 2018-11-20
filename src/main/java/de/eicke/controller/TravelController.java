@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.eicke.entities.StatusMessage;
 import de.eicke.entities.Travel;
 import de.eicke.entities.TravelListItem;
 import de.eicke.entities.TravelValidator;
@@ -80,5 +81,10 @@ public class TravelController {
 		error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
 		error.setMessage(ex.getMessage());
 		return new ResponseEntity<ErrorMessage>(error, HttpStatus.OK);
+	}
+	
+	@RequestMapping(path="/healthy", method=RequestMethod.GET)
+	public ResponseEntity<StatusMessage> getHealthStatus() {
+		return new ResponseEntity<StatusMessage>(new StatusMessage("All fine!"), HttpStatus.OK);
 	}
 }
