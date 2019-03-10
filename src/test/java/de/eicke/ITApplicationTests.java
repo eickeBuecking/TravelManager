@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,6 +40,7 @@ import de.eicke.entities.Travel;
 import de.eicke.entities.TravelListItem;
 import de.eicke.exceptions.TravelManagerException;
 import de.eicke.repository.TravelRepository;
+import de.eicke.travelmanager.stream.TravelManagerStreamController;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -69,6 +71,9 @@ public class ITApplicationTests {
 	TravelManager manager;
 	@Autowired
 	TravelRepository repository;
+	
+	@MockBean
+	TravelManagerStreamController controller;
 	
 	@Autowired
 	ObjectMapper objectMapper;

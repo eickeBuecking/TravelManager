@@ -27,6 +27,9 @@ import de.eicke.entities.Destination;
 import de.eicke.entities.Travel;
 import de.eicke.entities.TravelValidator;
 import de.eicke.repository.TravelRepository;
+import de.eicke.travelmanager.stream.TravelManagerEventProducer;
+import de.eicke.travelmanager.stream.TravelManagerStreamController;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -39,14 +42,24 @@ public class FastUnitTestsTravelManager {
 		public TravelManager travelManager() {
 			return new TravelManager();
 		}
+		@Bean
+		public TravelManagerStreamController controller() {
+			return new TravelManagerStreamController();
+		}
+		
 	}
 	
 	@Autowired
 	private TravelManager manager;
 	
+	@Autowired
+	private TravelManagerStreamController streamController;
+	
 	@MockBean
 	private TravelRepository travelRepository;
 	
+	@MockBean
+	private TravelManagerEventProducer eventProducer;
 	
 	
 	@Before

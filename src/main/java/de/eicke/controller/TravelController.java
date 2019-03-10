@@ -26,6 +26,7 @@ import de.eicke.entities.TravelListItem;
 import de.eicke.entities.TravelValidator;
 import de.eicke.exceptions.ErrorMessage;
 import de.eicke.exceptions.TravelManagerException;
+import de.eicke.travelmanager.stream.TravelManagerEventProducer;
 
 @RestController
 public class TravelController {
@@ -35,7 +36,6 @@ public class TravelController {
 	@Autowired
 	TravelValidator travelValidator;
 	
-
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.addValidators(travelValidator);
@@ -60,6 +60,7 @@ public class TravelController {
 			logger.info("Fetch travels with filter: {}", searchTerm.get());
 			return manager.filterTravels(searchTerm.get());
 		} else {
+
 			logger.info("No searchterm applied, fetching all.");
 			return manager.getAllTravels();
 		}
@@ -85,6 +86,7 @@ public class TravelController {
 	
 	@RequestMapping(path="/healthy", method=RequestMethod.GET)
 	public ResponseEntity<StatusMessage> getHealthStatus() {
+		logger.info("Health-Check!");
 		return new ResponseEntity<StatusMessage>(new StatusMessage("All fine!"), HttpStatus.OK);
 	}
 }

@@ -81,4 +81,10 @@ public class Travel {
 		destinations.add(destination);
 	}
 
+	@Override
+	public String toString() {
+		return "Travel [id=" + id + ", name=" + name + ", description=" + description + ", startDate=" + startDate
+				+ ", endDate=" + endDate + ", destinations=" + destinations + "]";
+	}
+
 }

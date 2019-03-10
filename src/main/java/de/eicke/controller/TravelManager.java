@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import de.eicke.entities.Travel;
 import de.eicke.entities.TravelListItem;
 import de.eicke.repository.TravelRepository;
+import de.eicke.travelmanager.stream.TravelManagerEventProducer;
+import de.eicke.travelmanager.stream.TravelManagerStreamController;
 
 @Component
 public class TravelManager {
@@ -17,12 +19,17 @@ public class TravelManager {
 	@Autowired
 	TravelRepository repository;
 	
+	@Autowired
+	TravelManagerStreamController streamController;
+	
 	public Travel registerTravel(Travel newTravel) {
 		
 		if (newTravel.getName().isEmpty()) {
 			throw new RuntimeException("Field Name is mandatory!");
 		} else {
 			repository.save(newTravel);
+			//send message to kafka. better asynchronous..
+			streamController.createNewTravel(newTravel);
 			return newTravel;
 		}
 	}
@@ -32,6 +39,7 @@ public class TravelManager {
 			throw new RuntimeException("ID not set, update not possible!");
 		} else {
 			repository.save(update);
+			streamController.updateTravel(update);
 			return update;
 		}
 	}
@@ -55,6 +63,7 @@ public class TravelManager {
 		}
 		Travel travel = getTravelWithID(id);
 		repository.delete(travel);
+		streamController.deleteTravel(travel);
 	}
 	public List<TravelListItem> filterTravels(String search) {
 		Optional<String> string = Optional.of(search);
