@@ -52,7 +52,7 @@ public class FastUnitTestsTravelManager {
 	@Autowired
 	private TravelManager manager;
 	
-	@Autowired
+	@MockBean
 	private TravelManagerStreamController streamController;
 	
 	@MockBean
@@ -80,6 +80,7 @@ public class FastUnitTestsTravelManager {
 		
 		Travel storedTravel = manager.registerTravel(newTravel); 
 		verify(travelRepository, times(1)).save(newTravel);
+		verify(streamController, times(1)).createNewTravel(newTravel);
 	}
 	
 	@Test

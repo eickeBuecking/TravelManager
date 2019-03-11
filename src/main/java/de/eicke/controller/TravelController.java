@@ -89,4 +89,10 @@ public class TravelController {
 		logger.info("Health-Check!");
 		return new ResponseEntity<StatusMessage>(new StatusMessage("All fine!"), HttpStatus.OK);
 	}
+	
+	@RequestMapping(path="/travels/stream", method=RequestMethod.GET)
+	public ResponseEntity<StatusMessage> replayAllTravels() {
+		manager.startReplication();
+		return new ResponseEntity<StatusMessage>(new StatusMessage("Replication started!"), HttpStatus.OK);
+	}
 }

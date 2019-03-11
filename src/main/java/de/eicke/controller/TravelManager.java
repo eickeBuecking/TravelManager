@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import de.eicke.entities.Travel;
@@ -73,4 +74,12 @@ public class TravelManager {
 		List<Travel> travels = repository.findByNameStartingWith(string.get());
 		return travels.stream().map(travel -> new TravelListItem(travel)).collect(Collectors.toList());
 	}
+	
+	@Async
+	public void startReplication() {
+		List<Travel> list = repository.findAll();
+		list.forEach(item -> streamController.createNewTravel(item));
+	}
+	
+	
 }
