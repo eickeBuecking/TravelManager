@@ -2,6 +2,8 @@ package de.eicke.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import javax.validation.Valid;
 
@@ -92,7 +94,15 @@ public class TravelController {
 	
 	@RequestMapping(path="/travels/stream", method=RequestMethod.GET)
 	public ResponseEntity<StatusMessage> replayAllTravels() {
-		manager.startReplication();
+		CompletableFuture<String> result = manager.startReplication();
+		try {
+			logger.info("Replication Status: " + result.get());
+		} catch (InterruptedException e) {
+			logger.error("Replication interrupted: " + e.getStackTrace());
+		} catch (ExecutionException e) {
+			logger.error("Replication interrupted: " + e.getStackTrace());
+		}
+		
 		return new ResponseEntity<StatusMessage>(new StatusMessage("Replication started!"), HttpStatus.OK);
 	}
 }

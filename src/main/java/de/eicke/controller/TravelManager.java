@@ -13,6 +13,8 @@ import de.eicke.entities.TravelListItem;
 import de.eicke.repository.TravelRepository;
 import de.eicke.travelmanager.stream.TravelManagerEventProducer;
 import de.eicke.travelmanager.stream.TravelManagerStreamController;
+import java.util.concurrent.CompletableFuture;
+
 
 @Component
 public class TravelManager {
@@ -30,10 +32,12 @@ public class TravelManager {
 		} else {
 			repository.save(newTravel);
 			//send message to kafka. better asynchronous..
+			
 			streamController.createNewTravel(newTravel);
 			return newTravel;
 		}
 	}
+	
 	public Travel updateTravel(Travel update) {
 		
 		if (update.getId()== null || update.getId().isEmpty()) {
@@ -76,9 +80,10 @@ public class TravelManager {
 	}
 	
 	@Async
-	public void startReplication() {
+	public CompletableFuture<String> startReplication() {
 		List<Travel> list = repository.findAll();
 		list.forEach(item -> streamController.createNewTravel(item));
+		return CompletableFuture.completedFuture("Replicated " + repository.count() + " Travels.");
 	}
 	
 	

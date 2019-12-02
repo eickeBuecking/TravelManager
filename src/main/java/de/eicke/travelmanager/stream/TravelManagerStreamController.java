@@ -3,6 +3,7 @@ package de.eicke.travelmanager.stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import de.eicke.entities.Travel;
@@ -14,6 +15,7 @@ public class TravelManagerStreamController {
 	@Autowired
 	private TravelManagerEventProducer producer;
 	
+	@Async
 	public void createNewTravel(Travel newTravel) {
 		TravelEvent event = new TravelEvent(EventTypes.CREATE, newTravel);
 		producer.sendMessage(event);

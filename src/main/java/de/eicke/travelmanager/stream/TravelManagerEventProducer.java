@@ -20,6 +20,6 @@ public class TravelManagerEventProducer {
 
     public void sendMessage(TravelEvent message) {
         logger.info(String.format("#### -> Producing message -> %s", message));
-        this.kafkaTemplate.send(topic, message);
+        this.kafkaTemplate.send(topic, message.getPayload().getId(), message);
     }
 }
