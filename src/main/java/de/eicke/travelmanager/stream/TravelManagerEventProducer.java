@@ -15,11 +15,18 @@ public class TravelManagerEventProducer {
 	@Value("${kafka.topic}")
 	private String topic;
 	
+	@Value("${kafka.streaming}")
+	private boolean streaming;
+	
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendMessage(TravelEvent message) {
         logger.info(String.format("#### -> Producing message -> %s", message));
-        this.kafkaTemplate.send(topic, message.getPayload().getId(), message);
+        if (streaming) {
+        	this.kafkaTemplate.send(topic, message.getPayload().getId(), message);
+        } else {
+        	logger.info("Streaming not activated.");
+        }
     }
 }

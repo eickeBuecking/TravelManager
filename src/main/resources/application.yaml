@@ -22,6 +22,7 @@ logging.level: DEBUG
 test.value: true
 server.port: 9020
 kafka.topic: traveller
+kafka.streaming: false
 
 spring:
    kafka:
