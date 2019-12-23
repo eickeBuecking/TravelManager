@@ -4,7 +4,7 @@ stages:
      - build
      - test
      - deploy
-     
+     - package
 before_script:
      - chmod +x mvnw
      
@@ -26,3 +26,14 @@ integration-test:
      stage: test
      script: ./mvnw verify -Dskip.surefire.tests -e
     
+docker_push:
+  stage: package
+  image: docker:latest
+  services:
+   - docker:dind
+  script:
+   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+   - docker build -t eicke74/travelmanager .
+   - docker push eicke74/travelmanager:latest
+  dependencies:
+   - test
