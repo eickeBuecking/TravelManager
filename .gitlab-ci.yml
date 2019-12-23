@@ -35,5 +35,4 @@ docker_push:
    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
    - docker build -t eicke74/travelmanager .
    - docker push eicke74/travelmanager:latest
-  dependencies:
-   - test
+  
